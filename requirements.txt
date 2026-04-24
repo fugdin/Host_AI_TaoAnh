@@ -1,0 +1,13 @@
+torch
+torchvision
+diffusers
+transformers
+accelerate
+safetensors
+sentencepiece
+protobuf
+fastapi
+uvicorn[standard]
+python-dotenv
+pillow
+python-multipart
