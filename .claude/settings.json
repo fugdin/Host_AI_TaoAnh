@@ -7,7 +7,10 @@
       "Bash(\"d:/Thuc_Tap/Host_AI_TaoAnh/venv/Scripts/python.exe\" -c \"import torch; print\\(f'PyTorch {torch.__version__}'\\); print\\(f'CUDA available: {torch.cuda.is_available\\(\\)}'\\)\")",
       "Bash(\"d:/Thuc_Tap/Host_AI_TaoAnh/venv/Scripts/python.exe\" -c \"import torch; import diffusers; import fastapi; import transformers; print\\(f'torch={torch.__version__} CUDA={torch.cuda.is_available\\(\\)}'\\); print\\(f'diffusers={diffusers.__version__}'\\); print\\(f'fastapi={fastapi.__version__}'\\); print\\(f'transformers={transformers.__version__}'\\)\")",
       "Bash(\"d:/Thuc_Tap/Host_AI_TaoAnh/venv/Scripts/python.exe\" -c \"from diffusers import FluxPipeline, FluxImg2ImgPipeline; print\\('FluxPipeline OK'\\); print\\('FluxImg2ImgPipeline OK'\\)\")",
-      "Bash(\"d:/Thuc_Tap/Host_AI_TaoAnh/venv/Scripts/python.exe\" -c \"from generate import SUPPORTED_MODELS, list_models; list_models\\(\\)\")"
+      "Bash(\"d:/Thuc_Tap/Host_AI_TaoAnh/venv/Scripts/python.exe\" -c \"from generate import SUPPORTED_MODELS, list_models; list_models\\(\\)\")",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Fugdin\" -Directory -ErrorAction SilentlyContinue | ForEach-Object { $size = \\(Get-ChildItem $_.FullName -Recurse -File -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum\\).Sum; [PSCustomObject]@{Folder=$_.Name; SizeGB=[math]::Round\\($size/1GB,2\\)} } | Sort-Object SizeGB -Descending | Select-Object -First 15 | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Fugdin\\\\Downloads\" -File -ErrorAction SilentlyContinue | Sort-Object Length -Descending | Select-Object -First 15 | ForEach-Object { [PSCustomObject]@{Name=$_.Name; SizeMB=[math]::Round\\($_.Length/1MB,1\\)} } | Format-Table -AutoSize)",
+      "PowerShell(Get-ChildItem \"C:\\\\Users\\\\Fugdin\\\\AppData\\\\Local\" -Directory -ErrorAction SilentlyContinue | ForEach-Object { $size = \\(Get-ChildItem $_.FullName -Recurse -File -ErrorAction SilentlyContinue | Measure-Object -Property Length -Sum -ErrorAction SilentlyContinue\\).Sum; if\\($size -gt 500MB\\) { [PSCustomObject]@{Folder=$_.Name; SizeGB=[math]::Round\\($size/1GB,2\\)} } } | Sort-Object SizeGB -Descending | Format-Table -AutoSize)"
     ]
   }
 }
