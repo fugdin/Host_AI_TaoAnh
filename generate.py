@@ -144,11 +144,27 @@ def _apply_offload(pipe, config):
     pipe.enable_attention_slicing()
 
 
+def _get_model_vram(model_id):
+    for m in SUPPORTED_MODELS.values():
+        if m["id"] == model_id:
+            try:
+                return float(m["vram"].replace("~", "").replace("GB", "").strip())
+            except ValueError:
+                return 8.0
+    return 8.0
+
+
 def load_pipelines():
     config = get_device_config()
     token = _get_token()
     model_id, family, name = _resolve_model_id()
     Txt2ImgClass, Img2ImgClass = _get_pipeline_classes(family)
+
+    vram_gb = torch.cuda.get_device_properties(0).total_memory / (1024 ** 3) if torch.cuda.is_available() else 0
+    model_vram = _get_model_vram(model_id)
+    if model_vram >= vram_gb and config["offload"] == "model":
+        config["offload"] = "sequential"
+        print(f"  Model can {model_vram}GB, GPU chi co {vram_gb:.0f}GB -> chuyen sang sequential offload")
 
     print(f"Dang tai model: {name}")
     print(f"  HF ID: {model_id}")

@@ -3,13 +3,14 @@ import io
 import time
 import uuid
 
-from fastapi import FastAPI, File, Form, UploadFile, HTTPException
+from fastapi import FastAPI, File, Form, UploadFile, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 from PIL import Image
 
 from generate import load_pipelines, generate_from_text, generate_from_image, SUPPORTED_MODELS
+from auth import verify_api_key
 
 app = FastAPI(title="AI Image Generation API")
 
@@ -60,7 +61,7 @@ def startup():
 
 
 @app.post("/api/v1/generate")
-def api_generate_text(req: TextGenerateRequest):
+def api_generate_text(req: TextGenerateRequest, _=Depends(verify_api_key)):
     start = time.time()
     image = generate_from_text(
         txt2img_pipe,
@@ -77,6 +78,7 @@ def api_generate_text(req: TextGenerateRequest):
 
 @app.post("/api/v1/design")
 def api_design(
+    _=Depends(verify_api_key),
     image: UploadFile = File(..., description="Anh goc (PNG/JPG/WEBP)"),
     prompt: str = Form(..., description="Prompt mo ta style mong muon"),
     negative_prompt: str = Form(default=""),
